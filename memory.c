@@ -19,7 +19,7 @@
  */
 u_int8_t mem_read(cpu_t *cpu, address_t addr)
 {
-    if (!status_bit(cpu, S_MODE) && !status_bit(cpu, S_VMEM))
+    if (!c0_bit(cpu, S_MODE) && !c0_bit(cpu, S_VMEM))
     {
         return cpu->physical_memory[addr];
     }
@@ -38,7 +38,7 @@ u_int8_t mem_read(cpu_t *cpu, address_t addr)
  */
 void mem_write(cpu_t *cpu, data_t v, address_t addr)
 {
-    if (!status_bit(cpu, S_MODE) && !status_bit(cpu, S_VMEM))
+    if (!c0_bit(cpu, S_MODE) && !c0_bit(cpu, S_VMEM))
     {
         cpu->physical_memory[addr] = v;
     }

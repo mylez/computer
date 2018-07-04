@@ -1,7 +1,3 @@
-//
-// Created by Miles on 7/3/18.
-//
-
 #include <stdio.h>
 #include <memory.h>
 #include "cpu.h"

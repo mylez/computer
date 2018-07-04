@@ -31,7 +31,14 @@ u_int16_t set_pc_register_wide_incr(cpu_t *cpu)
     return addr;
 }
 
+
 void set_register(cpu_t *cpu, data_t v, u_int8_t r)
 {
     cpu->register_file[r] = v;
+}
+
+
+bool c0_bit(cpu_t *cpu, data_t bitmask)
+{
+    return (cpu->register_file[R_C0] & bitmask);
 }

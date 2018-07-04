@@ -4,7 +4,6 @@
 #include "register_file.h"
 #include "util.h"
 #include "memory.h"
-#include "cpu.h"
 
 
 /**
@@ -72,18 +71,16 @@ void inst_cycle(cpu_t *cpu)
             imm_0  = mem_read(cpu, set_pc_register_wide_incr(cpu));
             imm_1  = mem_read(cpu, set_pc_register_wide_incr(cpu));
             imm_16 = imm_0 + imm_1 * (u_int16_t) 0x100;
-
             if (cpu->register_file[R_AC] == 0)
             {
                 set_register_wide(cpu, imm_16, R_PX, R_PY);
             }
-
             break;
         case I_SSET:
             imm_0 = mem_read(cpu, set_pc_register_wide_incr(cpu));
-            if (status_bit(cpu, S_MODE)) // privileged mode
+            if (c0_bit(cpu, S_MODE) == 0) // privileged mode
             {
-                cpu->register_file[R_MS] |= imm_0;
+                cpu->register_file[R_C0] |= imm_0;
             }
             else
             {
@@ -107,15 +104,4 @@ void inst_cycle(cpu_t *cpu)
     printf("\n");
 
     cpu->inst_cycle_count++;
-}
-
-/**
- * returns true if cpu is currently in supervisor mode
- *
- * @param cpu
- * @return
- */
-bool status_bit(cpu_t *cpu, u_int8_t sbit)
-{
-    return (cpu->register_file[R_MS] & sbit);
 }

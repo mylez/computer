@@ -18,11 +18,11 @@ static const u_int8_t
     R_PY = 3,
 // accumulator
     R_AC = 4,
-// frame pointer
-    R_FX = 5,
-    R_FY = 6,
-// machine status byte
-    R_MS = 7;
+// page table virtual address
+    R_VX = 5,
+    R_VY = 6,
+// control byte
+    R_C0 = 7;
 
 static const data_t
     S_MODE = 0x80,
@@ -35,5 +35,7 @@ void set_register_wide(cpu_t *cpu, address_t w, u_int8_t r_a, u_int8_t r_b);
 void set_register(cpu_t *cpu, data_t v, u_int8_t r);
 
 u_int16_t set_pc_register_wide_incr(cpu_t *cpu);
+
+bool c0_bit(cpu_t *cpu, data_t sbit);
 
 #endif //CPU_SIM_REGISTER_FILE_H

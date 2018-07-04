@@ -1,0 +1,31 @@
+
+16 bits = 7 bit virtual page num + 9 bit page offset
+
+0xfe00 <- vpn bits
+0x01ff <- offset bits
+
+2^7 = 128 virtual pages = 128 byte page table
+2^9 = 512 byte page
+
+physical memory: 8 pages of 512 bytes = 4 kib
+
+
+
+page table: 128 pages of 512 bytes = 64 kib
+----------------------------------------------------
+00   XY XY XY XY XY XY XY XY XY XY XY XY XY XY XY XY
+10   XY XY XY XY XY XY XY XY XY XY XY XY XY XY XY XY
+20   XY XY XY XY XY XY XY XY XY XY XY XY XY XY XY XY
+30   XY XY XY XY XY XY XY XY XY XY XY XY XY XY XY XY
+40   XY XY XY XY XY XY XY XY XY XY XY XY XY XY XY XY
+50   XY XY XY XY XY XY XY XY XY XY XY XY XY XY XY XY
+60   XY XY XY XY XY XY XY XY XY XY XY XY XY XY XY XY
+70   XY XY XY XY XY XY XY XY XY XY XY XY XY XY XY XY
+
+
+to enable virtual memory
+    1. page table registers R_VX, R_VY must point to start of page table
+    2. kernel page must be mapped so that:
+        a. kernel addresses are unchanged
+        b. page table exists in the kernel page
+    3. control register bit S_VMEM must be set to 1

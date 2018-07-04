@@ -12,7 +12,7 @@
  * @param filepath
  * @param cpu
  */
-void load_mem(const char *filepath, cpu_t *cpu)
+void load_mem(cpu_t *cpu, const char *filepath)
 {
     int byte;
 
@@ -20,23 +20,23 @@ void load_mem(const char *filepath, cpu_t *cpu)
 
     file = fopen(filepath, "r");
 
-    printf("loading memory from file: %s\n\n", filepath);
+    printf("loading memory from file: %s\n", filepath);
 
     if (file)
     {
-        int i = 0;
+        address_t i = 0;
 
         memset(cpu->physical_memory, 0, PHYSICAL_MEMORY_BYTES);
 
         while ((byte = getc(file)) != EOF)
         {
-            cpu->physical_memory[i++] = (u_int8_t) byte;
+            cpu->physical_memory[i++] = (data_t) byte;
         }
         fclose(file);
     }
     else
     {
-        printf("error: unable to read mem file");
+        printf("error: unable to read file\n");
     }
 }
 

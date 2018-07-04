@@ -10,7 +10,7 @@
 #include "cpu.h"
 
 
-void load_mem(const char *filepath, cpu_t *cpu);
+void load_mem(cpu_t *cpu, const char *filepath);
 
 void print_file(int m, int n, int k, data_t *f);
 

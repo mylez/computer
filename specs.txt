@@ -25,7 +25,7 @@ page table: 128 pages of 512 bytes = 64 kib
 
 to enable virtual memory
     1. page table registers R_VX, R_VY must point to start of page table
-    2. kernel page must be mapped so that:
+    2. kernel page must be initialized and mapped so that:
         a. kernel addresses are unchanged
         b. page table exists in the kernel page
     3. control register bit S_VMEM must be set to 1

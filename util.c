@@ -46,9 +46,9 @@ void load_mem(const char *filepath, cpu_t *cpu)
  * @param k
  * @param f
  */
-void print_file(int n, int k, u_int8_t *f)
+void print_file(int m, int n, int k, data_t *f)
 {
-    for (int i = 0; i < n; i++)
+    for (int i = m; i < n; i++)
     {
         if (!((i) % k))
         {
@@ -69,12 +69,16 @@ void print_file(int n, int k, u_int8_t *f)
  */
 void print_memory(cpu_t *cpu)
 {
-    printf("memory:\n");
-    print_file(0x100, 0x10, cpu->physical_memory);
+    int dsp = 0x50;
+    printf("\n\tphysical memory\n");
+    print_file(0, dsp, 0x10, cpu->physical_memory);
+    printf("\t...\n");
+    print_file(PHYSICAL_MEMORY_BYTES - dsp, PHYSICAL_MEMORY_BYTES , 0x10, cpu->physical_memory);
 }
 
 
-u_int16_t make_wide(u_int8_t a, u_int8_t b)
+void print_register_file(cpu_t *cpu)
 {
-    return a + b*(u_int16_t)0x100;
+    printf("\n\tregister file\n");
+    print_file(0, REGISTER_FILE_BYTES, 4, cpu->register_file);
 }

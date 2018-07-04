@@ -6,9 +6,12 @@
 #include <stdbool.h>
 
 
-
 #define REGISTER_FILE_BYTES 8
 #define PHYSICAL_MEMORY_BYTES 0x100
+
+typedef u_int8_t data_t;
+
+typedef u_int16_t address_t;
 
 typedef struct
 {
@@ -16,9 +19,10 @@ typedef struct
 
     int inst_cycle_count;
 
-    u_int8_t
+    data_t
         register_file[REGISTER_FILE_BYTES],
         *physical_memory;
+
 } cpu_t;
 
 cpu_t make_cpu();

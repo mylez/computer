@@ -2,6 +2,7 @@
 // Created by Miles on 7/3/18.
 //
 
+#include <stdio.h>
 #include "cpu.h"
 #include "memory.h"
 #include "control.h"
@@ -16,13 +17,14 @@
  * @param addr
  * @return
  */
-u_int8_t mem_read(cpu_t *cpu, u_int16_t addr)
+u_int8_t mem_read(cpu_t *cpu, address_t addr)
 {
     if (!status_bit(cpu, S_MODE) && !status_bit(cpu, S_VMEM))
     {
         return cpu->physical_memory[addr];
     }
 
+    printf("performing virtual lookup\n");
     return 0;
 }
 
@@ -34,7 +36,7 @@ u_int8_t mem_read(cpu_t *cpu, u_int16_t addr)
  * @param v
  * @param addr
  */
-void mem_write(cpu_t *cpu, u_int8_t v, u_int16_t addr)
+void mem_write(cpu_t *cpu, data_t v, address_t addr)
 {
     if (!status_bit(cpu, S_MODE) && !status_bit(cpu, S_VMEM))
     {

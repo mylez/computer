@@ -1,4 +1,9 @@
+noop
+addi    10
+stor    0
 clac
-addi 5
-subi 3
-halt
+add
+addi    1
+stor    0
+clac
+beqz    6

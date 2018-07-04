@@ -3,8 +3,8 @@ import re
 
 parser = argparse.ArgumentParser()
 
-parser.add_argument("-o", type=str, default='z.out')
-parser.add_argument("-f", type=str, required=True)
+parser.add_argument("-o", help="output file path", type=str, default='z.out')
+parser.add_argument("-f", help="input file path", type=str, required=True)
 args = parser.parse_args()
 
 with open(args.f, 'r') as input_file:
@@ -19,6 +19,7 @@ def write_as_byte(b):
 
 
 for line in input_stream.splitlines():
+
     statement = re.findall("[^\s]+", line)
 
     if len(statement) == 0:
@@ -30,28 +31,35 @@ for line in input_stream.splitlines():
         imm = int(statement[1])
         write_as_byte(0x10)
         write_as_byte(imm)
+
     elif opcode == 'subi':
         imm = int(statement[1])
         write_as_byte(0x11)
         write_as_byte(imm)
+
     elif opcode == 'add':
         imm = int(statement[1])
         write_as_byte(0x20)
         write_as_byte(imm)
+
     elif opcode == 'sub':
         imm = int(statement[1])
         write_as_byte(0x21)
         write_as_byte(imm)
+
     elif opcode == 'clac':
         write_as_byte(0x30)
+
     elif opcode == 'stor':
         imm = int(statement[1])
         write_as_byte(0x40)
         write_as_byte(imm)
+
     elif opcode == 'beqz':
         imm = int(statement[1])
         write_as_byte(0x50)
         write_as_byte(imm)
+
     elif opcode == 'halt':
         write_as_byte(0xff)
 

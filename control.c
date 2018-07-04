@@ -55,13 +55,13 @@ void inst_cycle(cpu_t *cpu)
         case I_ADD:
             imm_0 = mem_read(cpu, pc_register_wide_incr(cpu));
             imm_1 = mem_read(cpu, pc_register_wide_incr(cpu));
-            imm_16 = imm_0 + imm_1 * (u_int16_t)100;
+            imm_16 = imm_0 + imm_1 * (u_int16_t)0x100;
             cpu->register_file[R_AC] += mem_read(cpu, imm_16);
             break;
         case I_SUB:
             imm_0 = mem_read(cpu, pc_register_wide_incr(cpu));
             imm_1 = mem_read(cpu, pc_register_wide_incr(cpu));
-            imm_16 = imm_0 + imm_1 * (u_int16_t)100;
+            imm_16 = imm_0 + imm_1 * (u_int16_t)0x100;
             cpu->register_file[R_AC] -= mem_read(cpu, imm_16);
             break;
         case I_STOR:

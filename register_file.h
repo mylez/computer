@@ -34,6 +34,8 @@ u_int16_t read_register_wide(cpu_t *cpu, u_int8_t r_a, u_int8_t r_b);
 
 void set_register_wide(cpu_t *cpu, u_int16_t v, u_int8_t r_a, u_int8_t r_b);
 
+void set_register(cpu_t *cpu, u_int8_t v, u_int8_t r);
+
 u_int16_t pc_register_wide_incr(cpu_t *cpu);
 
 #endif //CPU_SIM_REGISTER_FILE_H

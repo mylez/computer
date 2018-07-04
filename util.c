@@ -72,3 +72,9 @@ void print_memory(cpu_t *cpu)
     printf("memory:\n");
     print_file(0x100, 0x10, cpu->physical_memory);
 }
+
+
+u_int16_t make_wide(u_int8_t a, u_int8_t b)
+{
+    return a + b*(u_int16_t)0x100;
+}

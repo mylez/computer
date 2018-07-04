@@ -1,8 +1,7 @@
 # cpu-sim
 
 An 8-bit machine with 16 bits of address space. This is my attempt 
-at an implementation of virtual memory, access modes, and preemptive 
-multitasking.
+at virtual memory, access modes, and preemptive multitasking.
 
 the assembly program
 

@@ -10,7 +10,7 @@
 
 void print_register_file(cpu_t *cpu)
 {
-    printf("\tregister file:\n");
+    printf("register file\n");
     print_file(REGISTER_FILE_BYTES, 2, cpu->register_file);
 }
 
@@ -37,4 +37,9 @@ u_int16_t pc_register_wide_incr(cpu_t *cpu)
     set_register_wide(cpu, addr_incr, R_PX, R_PY);
 
     return addr;
+}
+
+void set_register(cpu_t *cpu, u_int8_t v, u_int8_t r)
+{
+    cpu->register_file[r] = v;
 }

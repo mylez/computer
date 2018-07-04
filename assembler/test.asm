@@ -1,9 +1,6 @@
-noop
-addi    10
-stor    0
 clac
-add
-addi    1
-stor    0
-clac
-beqz    6
+addi 5
+stor 254
+subi 1
+stor 127
+halt

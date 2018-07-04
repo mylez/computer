@@ -9,17 +9,24 @@
 #include "cpu.h"
 
 
-#define     R_00    0
-#define     R_AC    1
-#define     R_MX    2
-#define     R_MY    3
-#define     R_PX    4
-#define     R_PY    5
-#define     R_MS    6
-#define     R_PT    7
-
-#define     S_MODE  (u_int8_t)0x80
-#define     S_VMEM  (u_int8_t)0x40
+static const u_int8_t
+    // memory address
+    R_MX   = 0,
+    R_MY   = 1,
+    // program counter
+    R_PX   = 2,
+    R_PY   = 3,
+    // accumulator
+    R_AC   = 4,
+    // frame pointer
+    R_FX   = 5,
+    R_FY   = 6,
+    // machine status register
+    R_MS   = 7,
+    //
+    // masks for machine status register
+    S_MODE = 0x80,
+    S_VMEM = 0x40;
 
 void print_register_file(cpu_t *cpu);
 

@@ -8,7 +8,7 @@
 
 
 #define REGISTER_FILE_BYTES 8
-#define PHYSICAL_MEMORY_BYTES 0x10000
+#define PHYSICAL_MEMORY_BYTES 0x100
 
 typedef struct
 {

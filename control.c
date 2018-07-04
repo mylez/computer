@@ -65,7 +65,8 @@ void inst_cycle(cpu_t *cpu)
             cpu->register_file[R_AC] -= mem_read(cpu, imm_16);
             break;
         case I_STOR:
-
+            break;
+        case I_BEQZ:
             break;
         case I_HALT:
             cpu->running = false;

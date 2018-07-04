@@ -7,7 +7,7 @@
 int main()
 {
     cpu_t cpu = make_cpu();
-    load_mem("assembler/z.out", &cpu);
+    load_mem("assembler/test", &cpu);
 
 
     start(&cpu);

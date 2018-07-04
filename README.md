@@ -1,4 +1,4 @@
-# cpu-sim
+# computer
 
 An 8-bit machine with 16 bits of address space. This is my attempt 
 at virtual memory, access modes, and preemptive multitasking.

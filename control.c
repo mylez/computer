@@ -4,6 +4,7 @@
 #include "register_file.h"
 #include "util.h"
 #include "memory.h"
+#include "cpu.h"
 
 
 /**
@@ -32,7 +33,7 @@ void inst_cycle(cpu_t *cpu)
         imm_16    = 0;
 
     data_t
-        inst  = mem_read(cpu, set_pc_register_wide_incr(cpu)),
+        inst  = mem_read(cpu, pc_register_wide_incr(cpu)),
         imm_0 = 0,
         imm_1 = 0;
 
@@ -42,51 +43,54 @@ void inst_cycle(cpu_t *cpu)
             cpu->register_file[R_AC] = 0;
             break;
         case I_ADDI:
-            imm_0 = mem_read(cpu, set_pc_register_wide_incr(cpu));
+            imm_0 = mem_read(cpu, pc_register_wide_incr(cpu));
             cpu->register_file[R_AC] += imm_0;
             break;
         case I_SUBI:
-            imm_0 = mem_read(cpu, set_pc_register_wide_incr(cpu));
+            imm_0 = mem_read(cpu, pc_register_wide_incr(cpu));
             cpu->register_file[R_AC] -= imm_0;
             break;
         case I_ADD:
-            imm_0  = mem_read(cpu, set_pc_register_wide_incr(cpu));
-            imm_1  = mem_read(cpu, set_pc_register_wide_incr(cpu));
+            imm_0  = mem_read(cpu, pc_register_wide_incr(cpu));
+            imm_1  = mem_read(cpu, pc_register_wide_incr(cpu));
             imm_16 = imm_0 + imm_1 * (u_int16_t) 0x100;
             cpu->register_file[R_AC] += mem_read(cpu, imm_16);
             break;
         case I_SUB:
-            imm_0  = mem_read(cpu, set_pc_register_wide_incr(cpu));
-            imm_1  = mem_read(cpu, set_pc_register_wide_incr(cpu));
+            imm_0  = mem_read(cpu, pc_register_wide_incr(cpu));
+            imm_1  = mem_read(cpu, pc_register_wide_incr(cpu));
             imm_16 = imm_0 + imm_1 * (u_int16_t) 0x100;
             cpu->register_file[R_AC] -= mem_read(cpu, imm_16);
             break;
         case I_STOR:
-            imm_0  = mem_read(cpu, set_pc_register_wide_incr(cpu));
-            imm_1  = mem_read(cpu, set_pc_register_wide_incr(cpu));
+            imm_0  = mem_read(cpu, pc_register_wide_incr(cpu));
+            imm_1  = mem_read(cpu, pc_register_wide_incr(cpu));
             imm_16 = imm_0 + imm_1 * (u_int16_t) 0x100;
             mem_write(cpu, cpu->register_file[R_AC], imm_16);
             break;
         case I_BEQZ:
-            imm_0  = mem_read(cpu, set_pc_register_wide_incr(cpu));
-            imm_1  = mem_read(cpu, set_pc_register_wide_incr(cpu));
+            imm_0  = mem_read(cpu, pc_register_wide_incr(cpu));
+            imm_1  = mem_read(cpu, pc_register_wide_incr(cpu));
             imm_16 = imm_0 + imm_1 * (u_int16_t) 0x100;
             if (cpu->register_file[R_AC] == 0)
             {
-                set_register_wide(cpu, imm_16, R_PX, R_PY);
+                write_register_wide(cpu, imm_16, R_PX, R_PY);
             }
             break;
-        case I_SSET:
-            imm_0 = mem_read(cpu, set_pc_register_wide_incr(cpu));
+        case I_CSET:
+            imm_0 = mem_read(cpu, pc_register_wide_incr(cpu));
             if (c0_bit(cpu, S_MODE) == 0) // privileged mode
             {
+                printf("cset works in privileged mode!\n");
                 cpu->register_file[R_C0] |= imm_0;
             }
             else
             {
-                printf("exception: illegal instruction");
+                printf("exception: illegal instruction\n");
+                cpu->running = false;
                 // exception, callback
             }
+            break;
         case I_HALT:
             cpu->running = false;
             break;

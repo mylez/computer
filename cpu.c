@@ -19,9 +19,7 @@ cpu_t make_cpu()
 {
     cpu_t cpu;
     cpu.physical_memory = malloc(PHYSICAL_MEMORY_BYTES);
-
     reset_cpu(&cpu);
-
     return cpu;
 }
 

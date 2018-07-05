@@ -10,7 +10,13 @@ int main()
     cpu_t cpu = make_cpu();
     load_mem(&cpu, "assembler/test");
 
-    for (int i = 0; i < 1; i++) inst_cycle(&cpu);
+
+
+    cpu.physical_memory[0] = 1;
+
+
+    cpu.running = true;
+    for (int i = 0; i < 16 && cpu.running; i++) inst_cycle(&cpu);
     destroy_cpu(&cpu);
     return 0;
 }

@@ -30,11 +30,11 @@ static const data_t
 
 address_t read_register_wide(cpu_t *cpu, u_int8_t r_a, u_int8_t r_b);
 
-void set_register_wide(cpu_t *cpu, address_t w, u_int8_t r_a, u_int8_t r_b);
+void write_register_wide(cpu_t *cpu, address_t w, u_int8_t r_a, u_int8_t r_b);
 
-void set_register(cpu_t *cpu, data_t v, u_int8_t r);
+void write_register(cpu_t *cpu, data_t v, u_int8_t r);
 
-u_int16_t set_pc_register_wide_incr(cpu_t *cpu);
+u_int16_t pc_register_wide_incr(cpu_t *cpu);
 
 bool c0_bit(cpu_t *cpu, data_t sbit);
 

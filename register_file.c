@@ -13,26 +13,26 @@ u_int16_t read_register_wide(cpu_t *cpu, u_int8_t r_a, u_int8_t r_b)
 }
 
 
-void set_register_wide(cpu_t *cpu, address_t w, u_int8_t r_a, u_int8_t r_b)
+void write_register_wide(cpu_t *cpu, address_t w, u_int8_t r_a, u_int8_t r_b)
 {
     cpu->register_file[r_a] = (data_t) w;
     cpu->register_file[r_b] = (data_t) (w / 0x100);
 }
 
 
-u_int16_t set_pc_register_wide_incr(cpu_t *cpu)
+u_int16_t pc_register_wide_incr(cpu_t *cpu)
 {
     u_int16_t
         addr      = read_register_wide(cpu, R_PX, R_PY),
         addr_incr = addr + (address_t) 1;
 
-    set_register_wide(cpu, addr_incr, R_PX, R_PY);
+    write_register_wide(cpu, addr_incr, R_PX, R_PY);
 
     return addr;
 }
 
 
-void set_register(cpu_t *cpu, data_t v, u_int8_t r)
+void write_register(cpu_t *cpu, data_t v, u_int8_t r)
 {
     cpu->register_file[r] = v;
 }

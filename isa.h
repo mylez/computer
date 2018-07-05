@@ -13,7 +13,7 @@ static const data_t
     I_STOR = 0x40,
     I_BEQZ = 0x50,
 
-    I_SSET = 0xe0,
+    I_CSET = 0xe0,
     I_HALT = 0xff;
 
 

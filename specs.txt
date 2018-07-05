@@ -4,11 +4,13 @@
 0xfe00 <- vpn bits
 0x01ff <- offset bits
 
-2^7 = 128 virtual pages = 128 byte page table
+2^7 = 128 virtual pages = 128 table entries
 2^9 = 512 byte page
 
 physical memory: 8 pages of 512 bytes = 4 kib
 
+
+24
 
 
 page table: 128 pages of 512 bytes = 64 kib
@@ -23,9 +25,13 @@ page table: 128 pages of 512 bytes = 64 kib
 70   XY XY XY XY XY XY XY XY XY XY XY XY XY XY XY XY
 
 
+ability for kernel to manage multiple page tables via R_VX adn R_VY
+
+
 to enable virtual memory
     1. page table registers R_VX, R_VY must point to start of page table
     2. kernel page must be initialized and mapped so that:
         a. kernel addresses are unchanged
         b. page table exists in the kernel page
     3. control register bit S_VMEM must be set to 1
+

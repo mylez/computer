@@ -23,13 +23,20 @@ def write_as_word(w):
     as_bytes = bytes(struct.pack("<H", w))
     output_stream.write(as_bytes)
 
+def parse_imm(s):
+    if re.match('^0x', s):
+        return int(s, 16)
+    return int(s)
 
-l = 0
 
+line_nu = 0
 
 for line in file_text.splitlines():
 
-    l += 1
+    line_nu += 1
+
+    if re.match('^#', line):
+        continue
 
     statement = re.findall("[^\s]+", line)
 
@@ -37,9 +44,10 @@ for line in file_text.splitlines():
         continue
 
     opcode = statement[0]
+    imm = 0
 
     if len(statement) > 1:
-        imm = int(statement[1])
+        imm = parse_imm(statement[1])
 
     if opcode == 'noop':
         write_as_byte(0x00)
@@ -71,14 +79,14 @@ for line in file_text.splitlines():
         write_as_byte(0x50)
         write_as_word(imm)
 
-    elif opcode == 'sset':
+    elif opcode == 'cset':
         write_as_byte(0xe0)
         write_as_byte(imm)
 
     elif opcode == 'halt':
         write_as_byte(0xff)
     else:
-        print('unrecognized opcode, line %d: %s'%(l, line))
+        print('unrecognized opcode, line %d: %s' % (line_nu, line))
         exit(1)
 
 output_stream.close()

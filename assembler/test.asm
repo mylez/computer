@@ -1,6 +1,5 @@
+noop
+cset 0x40 # cset vmem
 clac
-addi 5
-stor 254
-subi 1
-stor 127
+add 0xabcd
 halt

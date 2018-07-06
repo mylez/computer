@@ -8,6 +8,9 @@ parser.add_argument("-o", help="output file path", type=str, default='z.out')
 parser.add_argument("-f", help="input file path", type=str, required=True)
 args = parser.parse_args()
 
+byte_count = 0
+d, s = first_pass()
+second_pass(d, s)
 
 class DirectiveType(Enum):
     INST = 1
@@ -34,10 +37,6 @@ def parse_tok_2(s):
         return s
     else:
         print('error parsing tok_2')
-
-
-byte_count = 0
-
 
 def first_pass():
     directives = []
@@ -158,7 +157,3 @@ def second_pass(directives, symbols):
             write_as_wide(addr)
 
     output_stream.close()
-
-
-d, s = first_pass()
-second_pass(d, s)

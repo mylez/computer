@@ -44,7 +44,7 @@ def first_pass():
     symbols = {}
     line_nu = 0
 
-    global byte_count
+    global byte_count   # stupid python scope resolution
 
     byte_count = 0
 
@@ -67,11 +67,12 @@ def first_pass():
         file_text = file.read()
 
     for line in file_text.splitlines():
-
         line_nu += 1
 
-        if re.match('^#', line):
-            continue
+        # remove comments
+        line = re.sub(';[^\n\r]*','', line)
+
+        print(line_nu, '\t\t', line)
 
         statement = re.findall("[^\s]+", line)
 
@@ -149,8 +150,6 @@ def second_pass(directives, symbols):
         as_bytes = bytes(struct.pack("<H", w))
         output_stream.write(as_bytes)
 
-    byte_count = 0
-
     for directive in directives:
         if directive.type == DirectiveType.INST:
             output_stream.write(directive.value)
@@ -162,5 +161,4 @@ def second_pass(directives, symbols):
 
 
 d, s = first_pass()
-print('s:', s)
 second_pass(d, s)

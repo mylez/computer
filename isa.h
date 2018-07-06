@@ -14,6 +14,7 @@ static const data_t
     I_BEQZ = 0x50,
 
     I_CSET = 0xe0,
+    I_VSET = 0xe1,
     I_HALT = 0xff;
 
 

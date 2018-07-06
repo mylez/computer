@@ -11,12 +11,8 @@ int main()
     load_mem(&cpu, "assembler/test");
 
 
-
-    cpu.physical_memory[0] = 1;
-
-
     cpu.running = true;
-    for (int i = 0; i < 16 && cpu.running; i++) inst_cycle(&cpu);
+    start(&cpu);
     destroy_cpu(&cpu);
     return 0;
 }

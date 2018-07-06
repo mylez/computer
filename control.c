@@ -91,6 +91,23 @@ void inst_cycle(cpu_t *cpu)
                 // exception, callback
             }
             break;
+        case I_VSET:
+            imm_0 = mem_read(cpu, pc_register_wide_incr(cpu));
+            imm_1 = mem_read(cpu, pc_register_wide_incr(cpu));
+            imm_16 = imm_0 + imm_1 * (u_int16_t) 0x100;
+            if (c0_bit(cpu, S_MODE) == 0) // privileged mode
+            {
+                printf("vset works in privileged mode!\n");
+                write_register_wide(cpu, imm_16, R_VX, R_VY);
+                cpu->register_file[R_C0] |= imm_0;
+            }
+            else
+            {
+                printf("exception: illegal instruction\n");
+                cpu->running = false;
+                // exception, callback
+            }
+            break;
         case I_HALT:
             cpu->running = false;
             break;

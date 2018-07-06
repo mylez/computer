@@ -9,8 +9,6 @@ parser.add_argument("-f", help="input file path", type=str, required=True)
 args = parser.parse_args()
 
 byte_count = 0
-d, s = first_pass()
-second_pass(d, s)
 
 class DirectiveType(Enum):
     INST = 1
@@ -157,3 +155,8 @@ def second_pass(directives, symbols):
             write_as_wide(addr)
 
     output_stream.close()
+
+
+d, s = first_pass()
+second_pass(d, s)
+

@@ -31,12 +31,25 @@ void start(cpu_t *cpu)
 /**
  *
  * @param cpu
- * @param exception
  */
-void save_context(cpu_t *cpu, data_t exception)
+void store_context(cpu_t *cpu)
 {
-    data_t user_register_context[REG_FILE_USER_SIZE];
-    strncpy(user_register_context, cpu->register_file, REG_FILE_USER_SIZE);
+    strncpy(cpu->register_file[R_X0], cpu->register_file, REG_FILE_USER_SIZE);
+}
+
+
+/**
+ *
+ * @param cpu
+ * @param e
+ */
+void raise_exception(cpu_t *cpu, data_t e)
+{
+    store_context(cpu);
+    write_register(cpu, e, R_EX);
+    write_c0_bit(cpu, S_MODE, 0); // set privileged mode
+    write_c0_bit(cpu, S_VMEM, 0); // turn off virtual memory
+    write_register_wide(cpu, read_register_wide(cpu, R_HX, R_HY), R_PX, R_PY); // begin executing at exception handler
 }
 
 
@@ -99,7 +112,7 @@ void inst_cycle(cpu_t *cpu)
             break;
         case I_CSET:
             imm_0 = mem_read(cpu, pc_register_wide_incr(cpu));
-            if (c0_bit(cpu, S_MODE) == 0) // privileged mode
+            if (read_c0_bit(cpu, S_MODE) == 0) // privileged mode
             {
                 printf("cset works in privileged mode!\n");
                 cpu->register_file[R_C0] |= imm_0;
@@ -115,7 +128,7 @@ void inst_cycle(cpu_t *cpu)
             imm_0 = mem_read(cpu, pc_register_wide_incr(cpu));
             imm_1 = mem_read(cpu, pc_register_wide_incr(cpu));
             imm_16 = imm_0 + imm_1 * (u_int16_t) 0x100;
-            if (c0_bit(cpu, S_MODE) == 0) // privileged mode
+            if (read_c0_bit(cpu, S_MODE) == 0) // privileged mode
             {
                 printf("vset works in privileged mode!\n");
                 write_register_wide(cpu, imm_16, R_VX, R_VY);

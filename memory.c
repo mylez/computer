@@ -42,7 +42,7 @@ u_int8_t mem_read(cpu_t *cpu, address_t addr)
 {
     printf("mem_read\n");
     address_t phys_addr;
-    if (!c0_bit(cpu, S_MODE) && !c0_bit(cpu, S_VMEM))
+    if (!read_c0_bit(cpu, S_MODE) && !read_c0_bit(cpu, S_VMEM))
     {
         phys_addr = addr;
     }
@@ -67,7 +67,7 @@ void mem_write(cpu_t *cpu, data_t v, address_t addr)
 {
     printf("mem_write\n");
     address_t phys_addr = 0;
-    if (!c0_bit(cpu, S_MODE) && !c0_bit(cpu, S_VMEM))
+    if (!read_c0_bit(cpu, S_MODE) && !read_c0_bit(cpu, S_VMEM))
     {
         phys_addr = addr;
     }

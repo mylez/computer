@@ -20,7 +20,7 @@
 
 void load_mem(cpu_t *cpu, const char *filepath);
 
-void print_file(cpu_t *cpu, int m, int n, int k, data_t *f, address_t addr, bool highlight_addr);
+void print_file(cpu_t *cpu, int m, int n, int k, data_t *f, bool highlight_addr);
 
 void print_memory(cpu_t *cpu);
 

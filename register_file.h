@@ -8,6 +8,8 @@
 
 #include "cpu.h"
 
+static const int
+    REG_FILE_USER_SIZE = 5;
 
 static const u_int8_t
 // memory address

@@ -41,15 +41,18 @@ address_t virtual_lookup(cpu_t *cpu, address_t virtual_address)
 u_int8_t mem_read(cpu_t *cpu, address_t addr)
 {
     printf("mem_read\n");
+    address_t phys_addr;
     if (!c0_bit(cpu, S_MODE) && !c0_bit(cpu, S_VMEM))
     {
-        return cpu->physical_memory[addr];
+        phys_addr = addr;
     }
     else
     {
-        address_t phys_addr = virtual_lookup(cpu, addr);
-        return cpu->physical_memory[phys_addr];
+        phys_addr = virtual_lookup(cpu, addr);
     }
+
+    cpu->_last_mem_read_addr = phys_addr;
+    return cpu->physical_memory[phys_addr];
 }
 
 

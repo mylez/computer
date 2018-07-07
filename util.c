@@ -47,7 +47,7 @@ void load_mem(cpu_t *cpu, const char *filepath)
  * @param k
  * @param f
  */
-void print_file(cpu_t *cpu, int m, int n, int k, data_t *f, address_t addr, bool highlight_addr)
+void print_file(cpu_t *cpu, int m, int n, int k, data_t *f, bool highlight_addr)
 {
     for (int i = m; i < n; i++)
     {
@@ -57,15 +57,22 @@ void print_file(cpu_t *cpu, int m, int n, int k, data_t *f, address_t addr, bool
         }
 
         if (highlight_addr && (i == cpu->_last_mem_write_addr)) printf(KYEL);
-        if (highlight_addr && (i == addr))printf(KGRN);
+        if (highlight_addr && (i == cpu->_last_mem_read_addr)) printf(KCYN);
+        if (highlight_addr && (i == cpu->_last_inst_addr))printf(KGRN);
 
         printf("%02x ", f[i]);
 
-        if (highlight_addr && (i == cpu->_last_mem_write_addr)) {
+        if (highlight_addr && (i == cpu->_last_mem_write_addr))
+        {
             printf(KNRM);
-            cpu->_last_mem_write_addr = -1;
+             cpu->_last_mem_write_addr = -1;
         }
-        if (highlight_addr && (i == addr)) printf(KNRM);
+        if (highlight_addr && (i == cpu->_last_mem_read_addr))
+        {
+            printf(KNRM);
+            cpu->_last_mem_read_addr = -1;
+        }
+        if (highlight_addr && (i == cpu->_last_inst_addr)) printf(KNRM);
 
 
 
@@ -86,14 +93,14 @@ void print_memory(cpu_t *cpu)
 {
     int dsp = 0x50;
     printf("\n\tphysical memory\n");
-    print_file(cpu, 0, dsp, 0x10, cpu->physical_memory, cpu->_last_inst_addr, true);
+    print_file(cpu, 0, dsp, 0x10, cpu->physical_memory, true);
     printf("\t...\n");
-    print_file(cpu, PHYSICAL_MEMORY_BYTES - dsp, PHYSICAL_MEMORY_BYTES, 0x10, cpu->physical_memory, 0, 0);
+    print_file(cpu, PHYSICAL_MEMORY_BYTES - dsp, PHYSICAL_MEMORY_BYTES, 0x10, cpu->physical_memory, 0);
 }
 
 
 void print_register_file(cpu_t *cpu)
 {
     printf("\n\tregister file\n");
-    print_file(NULL, 0, REGISTER_FILE_BYTES, 4, cpu->register_file, 0, false);
+    print_file(NULL, 0, REGISTER_FILE_BYTES, 4, cpu->register_file, false);
 }

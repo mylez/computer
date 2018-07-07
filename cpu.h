@@ -25,6 +25,7 @@ typedef struct
 
     address_t
         _last_inst_addr,
+        _last_mem_read_addr,
         _last_mem_write_addr;
 
 } cpu_t;

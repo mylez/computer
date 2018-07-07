@@ -7,9 +7,9 @@ incrementor:
 .text
 main:
     vset    page_table
-    cset    0x40
     clac
     stor    incrementor
+    cset    0x80
 loop:
     add     incrementor
     addi    0x01

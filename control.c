@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <unistd.h>
+#include <memory.h>
 #include "control.h"
 #include "isa.h"
 #include "register_file.h"
@@ -18,11 +19,24 @@ void start(cpu_t *cpu)
 
     while (cpu->running)
     {
-        printf("\e[1;1H\e[2J");
+        printf("\e[1;1H\e[2J"); // clear terminal
         printf("-------------------------------------------------------------\n");
         inst_cycle(cpu);
-        usleep(150000);
+        usleep(500000);
     }
+}
+
+
+
+/**
+ *
+ * @param cpu
+ * @param exception
+ */
+void save_context(cpu_t *cpu, data_t exception)
+{
+    data_t user_register_context[REG_FILE_USER_SIZE];
+    strncpy(user_register_context, cpu->register_file, REG_FILE_USER_SIZE);
 }
 
 
@@ -123,12 +137,9 @@ void inst_cycle(cpu_t *cpu)
     }
 
     printf("- cycle %d\n", cpu->inst_cycle_count);
-    printf(KRED);
     printf("\tinst:           %02x\n", inst);
-    printf(KNRM);
     printf("\timm_16:       %02x%02x\n", imm_1, imm_0);
     printf("\tinst_addr:    %04x\n", inst_addr);
-    printf("\trunning:    %d\n", cpu->running);
     print_register_file(cpu);
     print_memory(cpu);
     printf("\n");

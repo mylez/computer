@@ -85,10 +85,9 @@ def parse_tok_2(s):
 
 
 def first_pass():
-    directives = []
     line_nu = 0
 
-    builder = FirstPassBuilder()
+    b = FirstPassBuilder()
 
     with open(args.f, 'r') as file:
         file_text = file.read()
@@ -112,66 +111,66 @@ def first_pass():
 
         if re.match('[_\w][_\w0-9]*:$', tok_1):
             name = tok_1[:-1]
-            builder.set_symbol(name)
+            b.set_symbol(name)
 
         elif tok_1 == '.text':
-            builder.set_segment('.text')
+            b.set_segment('.text')
 
         elif tok_1 == '.data':
-            builder.set_segment('.data')
+            b.set_segment('.data')
 
         elif tok_1 == '.byte':
-            builder.push_as_byte(tok_2)
+            b.push_as_byte(tok_2)
 
         elif tok_1 == '.wide':
-            builder.push_as_wide(tok_2)
+            b.push_as_wide(tok_2)
 
         elif tok_1 == 'noop':
-            builder.push_as_byte(0x00)
+            b.push_as_byte(0x00)
 
         elif tok_1 == 'addi':
-            builder.push_as_byte(0x10)
-            builder.push_as_byte(tok_2)
+            b.push_as_byte(0x10)
+            b.push_as_byte(tok_2)
 
         elif tok_1 == 'subi':
-            builder.push_as_byte(0x11)
-            builder.push_as_byte(tok_2)
+            b.push_as_byte(0x11)
+            b.push_as_byte(tok_2)
 
         elif tok_1 == 'add':
-            builder.push_as_byte(0x20)
-            builder.push_as_wide(tok_2)
+            b.push_as_byte(0x20)
+            b.push_as_wide(tok_2)
 
         elif tok_1 == 'sub':
-            builder.push_as_byte(0x21)
-            builder.push_as_wide(tok_2)
+            b.push_as_byte(0x21)
+            b.push_as_wide(tok_2)
 
         elif tok_1 == 'clac':
-            builder.push_as_byte(0x30)
+            b.push_as_byte(0x30)
 
         elif tok_1 == 'stor':
-            builder.push_as_byte(0x40)
-            builder.push_as_wide(tok_2)
+            b.push_as_byte(0x40)
+            b.push_as_wide(tok_2)
 
         elif tok_1 == 'beqz':
-            builder.push_as_byte(0x50)
-            builder.push_as_wide(tok_2)
+            b.push_as_byte(0x50)
+            b.push_as_wide(tok_2)
 
         elif tok_1 == 'cset':
-            builder.push_as_byte(0xe0)
-            builder.push_as_byte(tok_2)
+            b.push_as_byte(0xe0)
+            b.push_as_byte(tok_2)
 
         elif tok_1 == 'vset':
-            builder.push_as_byte(0xe1)
-            builder.push_as_wide(tok_2)
+            b.push_as_byte(0xe1)
+            b.push_as_wide(tok_2)
 
         elif tok_1 == 'halt':
-            builder.push_as_byte(0xff)
+            b.push_as_byte(0xff)
 
         else:
             print('unrecognized opcode, line %d: %s' % (line_nu, line))
             exit(1)
 
-    return builder
+    return b
 
 
 def second_pass(builder):
@@ -186,9 +185,6 @@ def second_pass(builder):
 
     with open(args.o, 'wb') as output_stream:
 
-        print("data_offset", data_offset)
-
-        print('.text')
         for d in builder.text:
             if d.type == DirectiveType.INST:
                 output_stream.write(d.value)
@@ -196,15 +192,12 @@ def second_pass(builder):
                 as_bytes = bytes(struct.pack("<H", symbols[d.value]))
                 output_stream.write(as_bytes)
 
-        print('.data')
         for d in builder.data:
             if d.type == DirectiveType.INST:
                 output_stream.write(d.value)
             elif d.type == DirectiveType.ID:
                 as_bytes = bytes(struct.pack("<H", symbols[d.value]))
                 output_stream.write(as_bytes)
-
-    print(symbols)
 
 
 parser = argparse.ArgumentParser()
@@ -213,5 +206,4 @@ parser.add_argument("-f", help="input file path", type=str, required=True)
 args = parser.parse_args()
 
 b = first_pass()
-print(b)
 second_pass(b)

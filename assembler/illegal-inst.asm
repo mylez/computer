@@ -10,14 +10,16 @@ incrementor:
 .text
 main:
     vset    page_table
-    tset    0x10                ; set preemption timer to 16 instructions
     eset    handle_exception    ; designate code for exception handling
     cset    0x80                ; switch to user mode
-user_loop:
-    add     incrementor
-    addi    1
-    stor    incrementor
+    cuns    0x80                ; illegally attempt to raise privileges
     clac
-    beqz    user_loop
+    clac
+    clac
+    clac
+    clac
+    clac
+    clac
+    beqz main
 handle_exception:
     halt

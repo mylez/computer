@@ -2,9 +2,7 @@
 // Created by Miles on 7/3/18.
 //
 
-#include <cxxabi.h>
 #include "register_file.h"
-#include "util.h"
 
 
 u_int16_t read_register_wide(cpu_t *cpu, u_int8_t r_a, u_int8_t r_b)
@@ -36,9 +34,9 @@ void write_register(cpu_t *cpu, data_t v, u_int8_t r)
 }
 
 
-bool read_c0_bit(cpu_t *cpu, data_t bitmask)
+bool read_c0_bit(cpu_t *cpu, data_t sbit)
 {
-    return (cpu->register_file[R_C0] & bitmask);
+    return (cpu->register_file[R_C0] & sbit);
 }
 
 
@@ -50,7 +48,7 @@ void write_c0_bit(cpu_t *cpu, data_t sbit, data_t val)
     }
     else
     {
-        cpu->register_file[R_C0] &= (0xFF ^ val);
+        cpu->register_file[R_C0] &= (0xFF ^ sbit);
     }
 }
 

@@ -4,8 +4,6 @@
 
 #include <memory.h>
 #include "util.h"
-#include "register_file.h"
-#include "cpu.h"
 
 
 /**
@@ -58,23 +56,22 @@ void print_file(cpu_t *cpu, int m, int n, int k, data_t *f, bool highlight_addr)
 
         if (highlight_addr && (i == cpu->_last_mem_write_addr)) printf(KYEL);
         if (highlight_addr && (i == cpu->_last_mem_read_addr)) printf(KCYN);
-        if (highlight_addr && (i == cpu->_last_inst_addr))printf(KGRN);
+        if (highlight_addr && (i == cpu->_last_inst_addr)) printf(KGRN);
 
         printf("%02x ", f[i]);
 
         if (highlight_addr && (i == cpu->_last_mem_write_addr))
         {
             printf(KNRM);
-             cpu->_last_mem_write_addr = -1;
+            cpu->_last_mem_write_addr = -1;
         }
         if (highlight_addr && (i == cpu->_last_mem_read_addr))
         {
             printf(KNRM);
             cpu->_last_mem_read_addr = -1;
         }
-        if (highlight_addr && (i == cpu->_last_inst_addr)) printf(KNRM);
-
-
+        if (highlight_addr && (i == cpu->_last_inst_addr))
+        { printf(KNRM); }
 
 
         if (!((i + 1) % k) || i == n - 1)
@@ -102,5 +99,5 @@ void print_memory(cpu_t *cpu)
 void print_register_file(cpu_t *cpu)
 {
     printf("\n\tregister file\n");
-    print_file(NULL, 0, REGISTER_FILE_BYTES, 4, cpu->register_file, false);
+    print_file(cpu, 0, REGISTER_FILE_BYTES, 8, cpu->register_file, false);
 }

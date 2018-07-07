@@ -4,6 +4,7 @@
 #include "cpu.h"
 
 static const data_t
+// USER
     I_NOOP = 0x00,
     I_ADDI = 0x10,
     I_SUBI = 0x11,
@@ -12,9 +13,12 @@ static const data_t
     I_CLAC = 0x30,
     I_STOR = 0x40,
     I_BEQZ = 0x50,
-
-    I_CSET = 0xe0,
-    I_VSET = 0xe1,
+// RESTRICTED
+    I_TSET = 0xb0,
+    I_CSET = 0xc0,
+    I_CUNS = 0xc1,
+    I_VSET = 0xd0,
+    I_ESET = 0xe0,
     I_HALT = 0xff;
 
 

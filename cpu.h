@@ -23,6 +23,7 @@ typedef struct
 
     int inst_cycle_count;
 
+    // used for debugging and output
     address_t
         _last_inst_addr,
         _last_mem_read_addr,

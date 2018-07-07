@@ -5,7 +5,6 @@
 #ifndef CPU_SIM_REGISTER_FILE_H
 #define CPU_SIM_REGISTER_FILE_H
 
-
 #include "cpu.h"
 
 static const int
@@ -25,22 +24,22 @@ static const u_int8_t
 // everything below is restricted
 //
 // page table virtual address
-    R_VX = 5,
-    R_VY = 6,
+    R_VX = 5,   // page table x
+    R_VY = 6,   // page table y
 // control byte
-    R_C0 = 7,
+    R_C0 = 7,   // control bits
 // exception handling registers
-    R_EX = 8,
-    R_HX = 9,
-    R_HY = 10,
-// context buffer registers
-    R_X0 = 11,
-    R_X1 = 12,
-    R_X2 = 13,
-    R_X3 = 14,
-    R_X4 = 15,
+    R_EX = 8,   // exception type
+    R_HX = 9,   // handler x
+    R_HY = 10,  // handler y
 // interrupt timer
-    R_TI = 16;
+    R_TI = 11,
+// context buffer registers
+    R_X0 = 12,
+    R_X1 = 13,
+    R_X2 = 14,
+    R_X3 = 15,
+    R_X4 = 16;
 
 static const data_t
     S_MODE = 0x80,

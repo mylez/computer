@@ -76,7 +76,7 @@ class FirstPassBuilder:
 def parse_tok_2(s):
     if re.match('^0x', s):
         return int(s, 16)
-    elif re.match('[1-9][0-9]+', s):
+    elif re.match('[1-9][0-9]*', s):
         return int(s)
     elif re.match('[_\w]+', s):
         return s
@@ -155,12 +155,24 @@ def first_pass():
             b.push_as_byte(0x50)
             b.push_as_wide(tok_2)
 
+        elif tok_1 == 'tset':
+            b.push_as_byte(0xb0)
+            b.push_as_byte(tok_2)
+
         elif tok_1 == 'cset':
-            b.push_as_byte(0xe0)
+            b.push_as_byte(0xc0)
+            b.push_as_byte(tok_2)
+
+        elif tok_1 == 'cuns':
+            b.push_as_byte(0xc1)
             b.push_as_byte(tok_2)
 
         elif tok_1 == 'vset':
-            b.push_as_byte(0xe1)
+            b.push_as_byte(0xd0)
+            b.push_as_wide(tok_2)
+
+        elif tok_1 == 'eset':
+            b.push_as_byte(0xe0)
             b.push_as_wide(tok_2)
 
         elif tok_1 == 'halt':
@@ -179,9 +191,12 @@ def second_pass(builder):
 
     for key in builder.text_symbols.keys():
         symbols[key] = builder.text_symbols[key]
-
     for key in builder.data_symbols.keys():
         symbols[key] = builder.data_symbols[key] + data_offset
+
+    print('symbol table')
+    for key in symbols.keys():
+        print('\t', hex(symbols[key]), '\t', key)
 
     with open(args.o, 'wb') as output_stream:
 
@@ -204,6 +219,5 @@ parser = argparse.ArgumentParser()
 parser.add_argument("-o", help="output file path", type=str, default='z.out')
 parser.add_argument("-f", help="input file path", type=str, required=True)
 args = parser.parse_args()
-
 b = first_pass()
 second_pass(b)

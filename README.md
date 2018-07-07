@@ -5,18 +5,32 @@ at virtual memory, access modes, and preemptive multitasking.
 
 the assembly program
 
-    $ cat test.asm
-    clac
-    addi 5
-    stor 254
-    subi 1
-    stor 127
-    halt
+```asm
+; $ cat test.asm
+.data
+    page_table:
+        .byte   0x00
+    incrementor:
+        .byte   0x00
+
+.text
+    main:
+        vset    page_table
+        cset    0x40
+        clac
+        stor    incrementor
+    loop:
+        add     incrementor
+        addi    0x01
+        stor    incrementor
+        clac
+```
 
 
 assembles to the binary file
     
     $ python assembler.py -f test.asm -o test
     $ hexdump test
-    0000000 30 10 05 40 fe 00 11 01 40 7f 00 ff            
-    000000c
+    0000000 e1 15 00 e0 40 30 40 16 00 20 16 00 10 01 40 16
+    0000010 00 30 50 09 00 00 00                           
+    0000017

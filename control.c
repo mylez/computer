@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <unistd.h>
 #include "control.h"
 #include "isa.h"
 #include "register_file.h"
@@ -17,7 +18,10 @@ void start(cpu_t *cpu)
 
     while (cpu->running)
     {
+        printf("\e[1;1H\e[2J");
+        printf("-------------------------------------------------------------\n");
         inst_cycle(cpu);
+        usleep(150000);
     }
 }
 
@@ -32,10 +36,12 @@ void inst_cycle(cpu_t *cpu)
         inst_addr = read_register_wide(cpu, R_PX, R_PY),
         imm_16    = 0;
 
-    data_t
+        data_t
         inst  = mem_read(cpu, pc_register_wide_incr(cpu)),
         imm_0 = 0,
         imm_1 = 0;
+
+    cpu->_last_inst_addr = inst_addr;
 
     switch (inst)
     {
@@ -86,7 +92,7 @@ void inst_cycle(cpu_t *cpu)
             }
             else
             {
-                printf("exception: illegal instruction\n");
+                printf("EXCEPTION: illegal instruction\n");
                 cpu->running = false;
                 // exception, callback
             }
@@ -103,7 +109,7 @@ void inst_cycle(cpu_t *cpu)
             }
             else
             {
-                printf("exception: illegal instruction\n");
+                printf("EXCEPTION: illegal instruction\n");
                 cpu->running = false;
                 // exception, callback
             }
@@ -117,9 +123,12 @@ void inst_cycle(cpu_t *cpu)
     }
 
     printf("- cycle %d\n", cpu->inst_cycle_count);
+    printf(KRED);
     printf("\tinst:           %02x\n", inst);
+    printf(KNRM);
     printf("\timm_16:       %02x%02x\n", imm_1, imm_0);
     printf("\tinst_addr:    %04x\n", inst_addr);
+    printf("\trunning:    %d\n", cpu->running);
     print_register_file(cpu);
     print_memory(cpu);
     printf("\n");

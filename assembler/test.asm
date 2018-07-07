@@ -1,12 +1,18 @@
-main:                       ; beginning of program
-    vset    page_table      ; set the page table pointer
-    cset    0x40            ; enable virtual memory
-    clac                    ; clear accumulator
-    addi    0xab            ; load 0xab into accumulator
-    stor    0x0000          ; store it at virtual address 0x0000
-    halt                    ; stop execution
-page_table:                 ;
-    .wide 0x0000            ;
-    .wide 0x0000            ;
-    .wide 0x0000            ;
-    .wide 0x0000            ;
+.data
+page_table:
+    .byte   0x00
+incrementor:
+    .byte   0x00
+
+.text
+main:
+    vset    page_table
+    cset    0x40
+    clac
+    stor    incrementor
+loop:
+    add     incrementor
+    addi    0x01
+    stor    incrementor
+    clac
+    beqz    loop

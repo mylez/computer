@@ -9,9 +9,6 @@ int main()
 {
     cpu_t cpu = make_cpu();
     load_mem(&cpu, "assembler/test");
-
-
-    cpu.running = true;
     start(&cpu);
     destroy_cpu(&cpu);
     return 0;

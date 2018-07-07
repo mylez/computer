@@ -15,13 +15,17 @@ typedef u_int16_t address_t;
 
 typedef struct
 {
+    data_t
+        register_file[REGISTER_FILE_BYTES],
+        *physical_memory;
+
     bool running;
 
     int inst_cycle_count;
 
-    data_t
-        register_file[REGISTER_FILE_BYTES],
-        *physical_memory;
+    address_t
+        _last_inst_addr,
+        _last_mem_write_addr;
 
 } cpu_t;
 

@@ -31,5 +31,6 @@ void reset_cpu(cpu_t *cpu)
 {
     cpu->running = false;
     cpu->inst_cycle_count = 0;
+    cpu->_last_inst_addr = 0;
     memset(&cpu->register_file, 0, REGISTER_FILE_BYTES);
 }

@@ -7,9 +7,6 @@
 
 #include "cpu.h"
 
-static const int
-    REG_FILE_USER_SIZE = 5;
-
 static const u_int8_t
 // memory address
     R_MX = 0,
@@ -43,7 +40,8 @@ static const u_int8_t
 
 static const data_t
     S_MODE = 0x80,
-    S_VMEM = 0x40;
+    S_VMEM = 0x40,
+    S_TIME = 0x20;
 
 address_t read_register_wide(cpu_t *cpu, u_int8_t r_a, u_int8_t r_b);
 
@@ -53,8 +51,8 @@ void write_register(cpu_t *cpu, data_t v, u_int8_t r);
 
 u_int16_t pc_register_wide_incr(cpu_t *cpu);
 
-bool read_c0_bit(cpu_t *cpu, data_t sbit);
+bool read_c0_bit(cpu_t *cpu, data_t cbit);
 
-void write_c0_bit(cpu_t *cpu, data_t sbit, data_t val);
+void write_c0_bit(cpu_t *cpu, data_t cbit, data_t val);
 
 #endif //CPU_SIM_REGISTER_FILE_H

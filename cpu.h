@@ -6,8 +6,10 @@
 #include <stdbool.h>
 
 
-#define REGISTER_FILE_BYTES 16
-#define PHYSICAL_MEMORY_BYTES 0x1000
+#define REGISTER_FILE_BYTES 17
+#define PHYSICAL_MEMORY_BYTES 0x5000
+
+#define LICHTEN_DISPLAY false
 
 typedef u_int8_t data_t;
 

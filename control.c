@@ -5,7 +5,6 @@
 #include "register_file.h"
 #include "util.h"
 #include "memory.h"
-#include "cpu.h"
 
 
 /**
@@ -18,7 +17,8 @@ void start(cpu_t *cpu)
 
     while (cpu->running)
     {
-        //printf("\e[1;1H\e[2J"); // clear terminal
+        printf("\e[1;1H\e[2J"); // clear terminal
+
         if (read_c0_bit(cpu, S_MODE))
         {
             printf(KGRN);
@@ -35,10 +35,12 @@ void start(cpu_t *cpu)
 
         inst_cycle(cpu);
 
-        if (cpu->inst_cycle_count == 100)
-            break;
-
-      //  usleep(1000000);
+        printf("\x1B[32mlast inst\x1B[0m, \x1B[36mlast read\x1B[0m, \x1B[31mlast write\x1B[0m\n");
+        usleep(500000);
+        //printf("q: quit, press enter\n");
+        //int  c = getchar();
+        //if (c == 'q')
+        //    break;
     }
 }
 
@@ -51,7 +53,6 @@ void store_context(cpu_t *cpu)
 {
     printf(KMAG);
     printf("STORING CONTEXT\n");
-
     print_register_file(cpu);
     cpu->register_file[R_X0] = cpu->register_file[R_MX];
     cpu->register_file[R_X1] = cpu->register_file[R_MY];
@@ -59,7 +60,6 @@ void store_context(cpu_t *cpu)
     cpu->register_file[R_X3] = cpu->register_file[R_PY];
     cpu->register_file[R_X4] = cpu->register_file[R_AC];
     print_register_file(cpu);
-
     printf(KNRM);
 }
 
@@ -118,6 +118,7 @@ void inst_cycle(cpu_t *cpu)
 
     switch (inst)
     {
+        // user instructions
         case I_CLAC:
             cpu->register_file[R_AC] = 0;
             break;
@@ -157,7 +158,15 @@ void inst_cycle(cpu_t *cpu)
             }
             break;
 
+        case I_HALT:
+            cpu->running = false;
+            break;
 
+        case I_NOOP:
+        default:
+            break;
+
+        // kernel only instructions
         case I_TSET:
             imm_0 = mem_read(cpu, pc_register_wide_incr(cpu));
             if (read_c0_bit(cpu, S_MODE) == 0) // privileged mode
@@ -174,7 +183,7 @@ void inst_cycle(cpu_t *cpu)
             imm_0 = mem_read(cpu, pc_register_wide_incr(cpu));
             if (read_c0_bit(cpu, S_MODE) == 0) // privileged mode
             {
-                cpu->register_file[R_C0] |= imm_0;
+                write_c0_bit(cpu, imm_0, 1);
             }
             else
             {
@@ -186,7 +195,7 @@ void inst_cycle(cpu_t *cpu)
             imm_0 = mem_read(cpu, pc_register_wide_incr(cpu));
             if (read_c0_bit(cpu, S_MODE) == 0) // privileged mode
             {
-                cpu->register_file[R_C0] &= (0xff ^ imm_0);
+                write_c0_bit(cpu, imm_0, 0);
             }
             else
             {
@@ -208,6 +217,7 @@ void inst_cycle(cpu_t *cpu)
                 raise_exception(cpu, E_ILLG);
             }
             break;
+
         case I_VSET:
             imm_0  = mem_read(cpu, pc_register_wide_incr(cpu));
             imm_1  = mem_read(cpu, pc_register_wide_incr(cpu));
@@ -215,18 +225,11 @@ void inst_cycle(cpu_t *cpu)
             if (read_c0_bit(cpu, S_MODE) == 0) // privileged mode
             {
                 write_register_wide(cpu, imm_16, R_VX, R_VY);
-                cpu->register_file[R_C0] |= imm_0;
             }
             else
             {
                 raise_exception(cpu, E_ILLG);
             }
-            break;
-        case I_HALT:
-            cpu->running = false;
-            break;
-        case I_NOOP:
-        default:
             break;
     }
 
@@ -239,9 +242,17 @@ void inst_cycle(cpu_t *cpu)
     print_memory(cpu);
     printf("\n");
 
-    if (read_c0_bit(cpu, S_MODE) && (cpu->register_file[R_TI]-- == 0))
+    if (read_c0_bit(cpu, S_TIME))
     {
-        raise_exception(cpu, E_PRMT);
+        if (cpu->register_file[R_TI] == 0)
+        {
+            write_c0_bit(cpu, S_TIME, 0);
+            raise_exception(cpu, E_PRMT);
+        }
+        else
+        {
+            cpu->register_file[R_TI]--;
+        }
     }
 
     cpu->inst_cycle_count++;

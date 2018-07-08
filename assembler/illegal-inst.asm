@@ -12,6 +12,7 @@ main:
     vset    page_table
     eset    handle_exception    ; designate code for exception handling
     cset    0x80                ; switch to user mode
+    noop
     cuns    0x80                ; illegally attempt to raise privileges
     clac
     clac

@@ -10,6 +10,8 @@
 #include "cpu.h"
 
 
+#define VERBOSE_MEMORY false
+
 
 /**
  *
@@ -20,6 +22,12 @@
 u_int8_t mem_read(cpu_t *cpu, address_t addr);
 
 
+/**
+ *
+ * @param cpu
+ * @param v
+ * @param addr
+ */
 void mem_write(cpu_t *cpu, data_t v, address_t addr);
 
 

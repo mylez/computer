@@ -45,7 +45,7 @@ void load_mem(cpu_t *cpu, const char *filepath)
  * @param k
  * @param f
  */
-void print_file(cpu_t *cpu, int m, int n, int k, data_t *f, bool highlight_addr)
+void print_file(cpu_t *cpu, int m, int n, int k, data_t *f, bool highlight_addr, bool lichten)
 {
     for (int i = m; i < n; i++)
     {
@@ -58,7 +58,10 @@ void print_file(cpu_t *cpu, int m, int n, int k, data_t *f, bool highlight_addr)
         if (highlight_addr && (i == cpu->_last_mem_read_addr)) printf(KCYN);
         if (highlight_addr && (i == cpu->_last_inst_addr)) printf(KGRN);
 
-        printf("%02x ", f[i]);
+        if(lichten)
+            print_byte(f[i]);
+        else
+            printf("%02x ", f[i]);
 
         if (highlight_addr && (i == cpu->_last_mem_write_addr))
         {
@@ -88,16 +91,38 @@ void print_file(cpu_t *cpu, int m, int n, int k, data_t *f, bool highlight_addr)
  */
 void print_memory(cpu_t *cpu)
 {
-    int dsp = 0x50;
+    int dsp = 0x80;
     printf("\n\tphysical memory\n");
-    print_file(cpu, 0, dsp, 0x10, cpu->physical_memory, true);
+    print_file(cpu, 0, dsp, 0x10, cpu->physical_memory, true, LICHTEN_DISPLAY);
     printf("\t...\n");
-    print_file(cpu, PHYSICAL_MEMORY_BYTES - dsp, PHYSICAL_MEMORY_BYTES, 0x10, cpu->physical_memory, 0);
+    print_file(cpu, PHYSICAL_MEMORY_BYTES - dsp, PHYSICAL_MEMORY_BYTES, 0x10, cpu->physical_memory, 0, LICHTEN_DISPLAY);
 }
 
 
 void print_register_file(cpu_t *cpu)
 {
     printf("\n\tregister file\n");
-    print_file(cpu, 0, REGISTER_FILE_BYTES, 8, cpu->register_file, false);
+    print_file(cpu, 0, REGISTER_FILE_BYTES, 8, cpu->register_file, false, LICHTEN_DISPLAY);
+}
+
+void print_byte(u_int8_t byte)
+{
+    u_int8_t bit = 0x80;
+    printf("██");
+    printf(KNRM);
+    for (int i = 0; i < 8; i++)
+    {
+        if (bit & byte)
+        {
+            printf(KRED);
+            printf("█");
+        }
+        else
+        {
+            printf("░");
+        }
+        printf(KNRM);
+
+        bit = bit >> 1;
+    }
 }

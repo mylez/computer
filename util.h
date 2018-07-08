@@ -18,9 +18,12 @@
 #define KCYN  "\x1B[36m"
 #define KWHT  "\x1B[37m"
 
+
 void load_mem(cpu_t *cpu, const char *filepath);
 
-void print_file(cpu_t *cpu, int m, int n, int k, data_t *f, bool highlight_addr);
+void print_byte(u_int8_t byte);
+
+void print_file(cpu_t *cpu, int m, int n, int k, data_t *f, bool highlight_addr, bool lichten);
 
 void print_memory(cpu_t *cpu);
 

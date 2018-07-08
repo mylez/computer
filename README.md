@@ -34,3 +34,8 @@ assembles to the binary file
     0000000 e1 15 00 e0 40 30 40 16 00 20 16 00 10 01 40 16
     0000010 00 30 50 09 00 00 00                           
     0000017
+
+
+here it is running the `multiple-handlers.asm` program
+
+[![asciicast](https://asciinema.org/a/W5WMRRv75lQk24p1EoZhWXtDA.png)](https://asciinema.org/a/W5WMRRv75lQk24p1EoZhWXtDA)

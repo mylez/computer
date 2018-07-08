@@ -9,11 +9,11 @@
 
 address_t virtual_lookup(cpu_t *cpu, address_t virtual_address)
 {
-    printf("performing virtual lookup\n");
+    if (VERBOSE_MEMORY) printf("performing virtual lookup\n");
 
     u_int8_t virtual_page_num = (u_int8_t) virtual_address >> 9;
 
-    printf("\tvirtual_page_num:    %02x\n", virtual_page_num);
+    if (VERBOSE_MEMORY) printf("\tvirtual_page_num:    %02x\n", virtual_page_num);
 
     address_t
         offset          = virtual_address & (address_t) 0x01ff,
@@ -21,10 +21,10 @@ address_t virtual_lookup(cpu_t *cpu, address_t virtual_address)
         phys_page_addr  = cpu->physical_memory[page_entry_addr],
         phys_addr       = phys_page_addr + offset;
 
-    printf("\toffset:              %02x\n", offset);
-    printf("\tpage_entry_addr:   %04x\n", page_entry_addr);
-    printf("\tphys_page_addr:    %04x\n", phys_page_addr);
-    printf("\tphys_addr:         %04x\n\n", phys_addr);
+     if (VERBOSE_MEMORY) printf("\toffset:              %02x\n", offset);
+     if (VERBOSE_MEMORY) printf("\tpage_entry_addr:   %04x\n", page_entry_addr);
+     if (VERBOSE_MEMORY) printf("\tphys_page_addr:    %04x\n", phys_page_addr);
+     if (VERBOSE_MEMORY) printf("\tphys_addr:         %04x\n\n", phys_addr);
 
     return phys_addr;
 }
@@ -40,7 +40,7 @@ address_t virtual_lookup(cpu_t *cpu, address_t virtual_address)
  */
 u_int8_t mem_read(cpu_t *cpu, address_t addr)
 {
-    printf("mem_read\n");
+    if (VERBOSE_MEMORY) printf("mem_read\n");
     address_t phys_addr;
     if (!read_c0_bit(cpu, S_MODE) && !read_c0_bit(cpu, S_VMEM))
     {
@@ -65,7 +65,7 @@ u_int8_t mem_read(cpu_t *cpu, address_t addr)
  */
 void mem_write(cpu_t *cpu, data_t v, address_t addr)
 {
-    printf("mem_write\n");
+    if (VERBOSE_MEMORY) printf("mem_write\n");
     address_t phys_addr = 0;
     if (!read_c0_bit(cpu, S_MODE) && !read_c0_bit(cpu, S_VMEM))
     {

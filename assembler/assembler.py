@@ -202,6 +202,7 @@ def second_pass(builder):
 
         for d in builder.text:
             if d.type == DirectiveType.INST:
+                print('v', d.value)
                 output_stream.write(d.value)
             elif d.type == DirectiveType.ID:
                 as_bytes = bytes(struct.pack("<H", symbols[d.value]))

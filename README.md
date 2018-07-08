@@ -4,7 +4,10 @@ An 8-bit machine with 16 bits of address space. This is my attempt
 at virtual memory, access modes, and preemptive multitasking.
 
 here it is running the `multiple-handlers.asm` program
-<script src="https://asciinema.org/a/W5WMRRv75lQk24p1EoZhWXtDA.js" id="asciicast-W5WMRRv75lQk24p1EoZhWXtDA" async></script>
+
+[![asciicast](https://asciinema.org/a/W5WMRRv75lQk24p1EoZhWXtDA.png)](https://asciinema.org/a/W5WMRRv75lQk24p1EoZhWXtDA)
+
+
 the assembly program
 
 ```asm

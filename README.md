@@ -5,7 +5,7 @@ at virtual memory, access modes, and preemptive multitasking.
 
 here it is running the `multiple-handlers.asm` program
 
-<script src="https://asciinema.org/a/W5WMRRv75lQk24p1EoZhWXtDA.js" id="asciicast-W5WMRRv75lQk24p1EoZhWXtDA" async></script>
+[![asciicast](https://asciinema.org/a/14.png)](https://asciinema.org/a/14)
 
 the assembly program
 

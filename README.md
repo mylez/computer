@@ -30,7 +30,6 @@ the assembly program
         clac
 ```
 
-
 assembles to the binary file
     
     $ python assembler.py -f test.asm -o test

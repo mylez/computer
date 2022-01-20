@@ -7,7 +7,6 @@ here it is running the `multiple-handlers.asm` program
 
 [![asciicast](https://asciinema.org/a/W5WMRRv75lQk24p1EoZhWXtDA.png)](https://asciinema.org/a/W5WMRRv75lQk24p1EoZhWXtDA)
 
-
 the assembly program
 
 ```asm
